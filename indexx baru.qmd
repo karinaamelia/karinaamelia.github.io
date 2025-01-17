@@ -1,0 +1,277 @@
+---
+title: "Hubungan Nilai Tukar Rupiah dengan USD terhadap Kinerja Ekspor Sektor Manufaktur di Indonesia (2019-2023)"
+subtitle: "Metode Penelitian Politeknik APP Jakarta"
+author: "Karina Rizky Amelia"
+date: 2025-01-17
+number-sections: true
+format:
+  html: default
+  
+---
+
+<img src="Logo_Politeknik_APP.png" alt="Logo" width="45%" style="display: block; margin: auto;">
+
+
+## Pendahuluan
+
+### Latar belakang
+
+Perekonomian Indonesia mengalami guncangan signifikan akibat pandemi COVID-19, yang menyebabkan ketidakstabilan ekonomi dan pelemahan nilai tukar rupiah terhadap dolar AS. Penurunan permintaan global, tekanan domestik, dan fluktuasi harga komoditas utama memperburuk situasi, sehingga sektor manufaktur yang berorientasi ekspor menghadapi tantangan besar dalam menjaga daya saing di pasar internasional (Pati, 2020; Azizah, 2021).
+
+Depresiasi nilai tukar rupiah memiliki dampak yang beragam terhadap ekspor. Di satu sisi, depresiasi meningkatkan daya saing produk Indonesia di pasar global dengan harga yang lebih kompetitif. Namun, sektor manufaktur Indonesia, yang sangat bergantung pada bahan baku impor, juga menghadapi kenaikan biaya produksi yang dapat mengurangi keuntungan dan merusak keberlanjutan ekspor (Lubis, dkk. 2023). Fluktuasi nilai tukar rupiah terhadap dolar AS antara 2019 hingga 2023 menjadi faktor penting yang memengaruhi dinamika ini.
+
+Sektor manufaktur memainkan peran kunci dalam perekonomian Indonesia, menyumbang secara signifikan terhadap Produk Domestik Bruto (PDB) dan ekspor nasional. Stabilitas nilai tukar menjadi faktor penting bagi keberhasilan ekspor manufaktur. Penelitian ini bertujuan untuk menganalisis hubungan antara nilai tukar rupiah terhadap dolar AS dengan kinerja ekspor sektor manufaktur di Indonesia selama periode 2019-2023, dengan harapan memberikan wawasan yang relevan untuk perumusan kebijakan dan strategi peningkatan daya saing ekspor (Lubis,dkk 2023).
+
+### Ruang lingkup
+
+Penelitian ini berfokus pada analisis hubungan nilai tukar rupiah terhadap dolar AS dan kinerja ekspor sektor manufaktur di Indonesia selama periode 2019-2023. Sektor manufaktur dipilih karena kontribusinya yang signifikan terhadap Produk Domestik Bruto (PDB) dan perdagangan internasional Indonesia. Ruang lingkup penelitian mencakup data nilai tukar rupiah terhadap dolar AS, dan volume ekspor sektor manufaktur di indonesia selama periode 2019-2023 (*time series*). Penelitian ini bersifat kuantitatif dan menggunakan pendekatan analisis data time series dengan bantuan perangkat lunak statistik dan menggunakan teknik analisis regresi univariat.
+
+### Rumusan masalah
+
+1. Bagaimana tren nilai tukar rupiah terhadap dolar AS selama periode 2019-2023 memengaruhi kinerja ekspor sektor manufaktur di Indonesia?
+2. Apakah terdapat hubungan signifikan antara fluktuasi nilai tukar rupiah dan volume ekspor sektor manufaktur di Indonesia?
+3. Faktor-faktor apa saja yang memperkuat atau melemahkan dampak nilai tukar terhadap ekspor sektor manufaktur selama periode 2019-2020?
+
+### Tujuan dan manfaat penelitian
+
+1. Menganalisis tren nilai tukar rupiah terhadap dolar AS selama periode 2019-2023 dan dampaknya terhadap kinerja ekspor sektor manufaktur di Indonesia.
+2. Mengidentifikasi hubungan signifikan antara nilai tukar rupiah dan volume ekspor sektor manufaktur.
+3. Mengeksplorasi faktor-faktor pendukung dan penghambat yang memengaruhi dampak nilai tukar terhadap ekspor sektor manufaktur selama periode penelitian.
+
+### Package
+
+```{r}
+#| warning: false
+#| echo: true
+library('tidyverse')  # Untuk manipulasi data dan visualisasi
+library('readxl')     # Membaca data Excel dari Kementerian Perdagangan/Bank Indonesia
+library('knitr')      # Membuat laporan dinamis dengan integrasi teks, kode, dan output
+library('rmarkdown')  # Membuat dokumen dinamis dalam format HTML, PDF, atau Word
+library('lubridate')  # Mengelola data tanggal
+library('janitor')    # Membersihkan nama kolom
+library('ggplot2')    # Membuat grafik
+library('corrplot')   # Visualisasi korelasi
+library('car')        # Uji diagnostik regresi
+library('lmtest')     # Uji asumsi regresi
+library('tseries')    # Uji stasioneritas data time series
+library('kableExtra') # Membuat tabel untuk laporan
+library('dplyr')      # Manipulasi data yang efisien (filter, select, mutate, dll.)
+library('scales')     # Format dan pengaturan skala pada visualisasi data
+```
+
+## Studi pustaka
+
+**Nilai Tukar Rupiah**
+
+Nilai tukar rupiah terhadap mata uang asing, khususnya dolar AS, memainkan peran penting dalam perekonomian Indonesia. Fluktuasi nilai tukar dapat mempengaruhi daya saing produk Indonesia di pasar internasional. Studi yang dipublikasikan dalam Buletin Ilmiah Litbang Perdagangan menemukan bahwa nilai tukar memiliki pengaruh negatif dan signifikan terhadap ekspor Indonesia, baik dalam jangka pendek maupun panjang. Depresiasi nilai tukar rupiah cenderung menurunkan kinerja ekspor nasional. Selain itu, penelitian lain menunjukkan bahwa nilai tukar rupiah terhadap dolar AS memiliki pengaruh signifikan terhadap kinerja ekspor Indonesia. Depresiasi rupiah cenderung meningkatkan daya saing produk ekspor karena harga menjadi lebih murah bagi pembeli luar negeri, sehingga volume ekspor meningkat (Mustika & Achmad 2021).
+
+**Kinerja Ekspor Sektor Manufaktur**
+
+Sektor manufaktur merupakan salah satu pilar utama perekonomian Indonesia, dengan kontribusi signifikan terhadap Produk Domestik Bruto (PDB) dan penyerapan tenaga kerja. Kinerja ekspor sektor ini dipengaruhi oleh berbagai faktor, termasuk efisiensi teknis, impor bahan baku, investasi asing langsung (FDI), lokasi, ukuran perusahaan, produktivitas tenaga kerja, dan konsentrasi industri. Studi yang dilakukan oleh (Handoyo, dkk. 2024) mengeksplorasi faktor-faktor penentu kinerja ekspor industri manufaktur berteknologi rendah, menengah, dan tinggi di Indonesia. Temuan menunjukkan bahwa dalam semua kategori industri, efisiensi teknis, impor bahan baku, FDI, dan faktor-faktor lain merupakan penentu signifikan terhadap kinerja ekspor. Selain itu, penelitian lain menemukan bahwa FDI dan nilai tukar rupiah berpengaruh positif dan signifikan terhadap ekspor manufaktur di Indonesia, sedangkan inflasi tidak berpengaruh signifikan (Sulfiana & Sentosa, 2021).
+
+
+## Metode penelitian
+
+### Data
+
+```{r echo=FALSE}
+
+# Membaca data dari sheet "Ekspor Sektor"
+file_path <- "Data Volume Ekspor Industri Manufaktur.xlsx"
+Ekspor_Sektor <- read_excel(file_path, sheet = "Ekspor Sektor", col_names = TRUE)
+
+# Membulatkan angka pada semua kolom numerik ke 1 angka di belakang koma
+Ekspor_Sektor <- Ekspor_Sektor %>%
+  mutate(across(where(is.numeric), ~ round(.x, 1)))
+
+# Ubah nama kolom
+colnames(Ekspor_Sektor) <- c("HS", "Uraian", "2019", "2020", "2021", "2022", "2023", 
+                             "Trend (%) 19-23", "Perub (%) 2023-2022", "Peran (%) 2023", 
+                             "2023 Actual", "2024", "Perub (%) 24/23", "Peran (%) 2023")
+
+# Membuat tabel dengan caption dan styling yang rapi
+kable_output <- Ekspor_Sektor %>%
+  kbl(caption = "Tabel 1. Data Volume Ekspor Manufaktur Indonesia") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  scroll_box(width = "100%", height = "600px")
+
+# Menampilkan tabel
+kable_output
+
+
+```
+
+
+
+
+Tabel diatas merupakan merupakan data volume ekspor pada sektor industri manufaktur di Indonesia pada tahun (2019-2023) yang diambil dari Badan Pusat Statistik, diolah Pusat Data dan Sistem Informasi Kementerian Perdagangan. 
+
+
+
+
+
+```{r echo=FALSE}
+
+# Membaca data dari sheet "Kurs Transaksi USD"
+file_path <- "Kurs Transaksi.xlsx"
+Kurs_Transaksi<- read_excel(file_path, sheet = "Kurs Transaksi", col_names = TRUE)
+
+# Membulatkan angka pada semua kolom numerik ke 1 angka di belakang koma
+Kurs_Transaksi<- Kurs_Transaksi %>%
+  mutate(across(where(is.numeric), ~ round(.x, 1)))
+
+# Ubah nama kolom satu per satu
+colnames(Kurs_Transaksi) <- c("No", "Nilai", "Kurs Jual", "Kurs Beli", "Tanggal")
+
+# Menghapus baris dengan nilai "NA"
+Kurs_Transaksi_Cleaned <- Kurs_Transaksi %>%
+  filter(!is.na('No') & !is.na('Nilai') & !is.na('Kurs_Jual') & !is.na('Kurs_Beli') & !is.na('Tanggal'))
+
+
+
+Kurs_Transaksi <- Kurs_Transaksi %>%
+  mutate(
+    `Kurs Jual` = as.numeric(`Kurs Jual`),
+    `Kurs Beli` = as.numeric(`Kurs Beli`)
+  )
+
+
+# Format angka menjadi accounting format
+Kurs_Transaksi <- Kurs_Transaksi %>%
+  mutate(
+    `Kurs Jual` = comma(`Kurs Jual`, accuracy = 0.01),
+    `Kurs Beli` = comma(`Kurs Beli`, accuracy = 0.01)
+  )
+
+
+# Membuat tabel dengan caption dan styling yang rapi
+kable_output <- Kurs_Transaksi_Cleaned %>%
+  kbl(caption = "Tabel 2. Nilai Tukar USD dalam Rupiah") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  scroll_box(width = "100%", height = "600px")
+
+
+# Menampilkan tabel
+kable_output
+
+
+```
+
+
+
+
+Tabel diatas merupakan data nilai tukar Rupiah dengan USD dari tahun (2019-2023)yang diambil dari Bank Indonesia.
+
+
+
+
+### Metode analisis
+
+Metode analisis yang digunakan adalah regresi univariat dengan satu variabel independen dan satu variabel dependen, yang bertujuan untuk menganalisis hubungan antara nilai tukar rupiah terhadap USD dan kinerja ekspor sektor manufaktur di Indonesia dengan menggunakan pendekatan regresi linier sederhana, yang memungkinkan pembaca untuk mengidentifikasi seberapa besar pengaruh variabel independen terhadap variabel dependen dalam bentuk hubungan linier.
+
+Secara matematis, model regresi yang digunakan adalah sebagai berikut:
+
+$$
+y_{t}=\beta_0 + \beta_1 x_t+\mu_t
+$$ di mana $y_t$ adalah Volume Ekspor Industri Manufaktur  dan $x_t$ adalah Nilai Tukar Rupiah terhadap USD.
+
+
+## Pembahasan
+
+### Pembahasan masalah
+
+Pada bagian ini dapat ditampilkan data dan visualisasi data yang telah dikumpulkan.
+
+```{r echo= FALSE}
+
+# Membaca data dari sheet "Kurs Transaksi USD"
+file_path <- "Data Volume Ekspor Industri Manufaktur.xlsx"
+Data_Akumulasi<- read_excel(file_path, sheet = "Data Akumulasi", col_names = TRUE)
+
+# Membulatkan angka pada semua kolom numerik ke 1 angka di belakang koma
+Data_Akumulasi<- Data_Akumulasi %>%
+  mutate(across(where(is.numeric), ~ round(.x, 1)))
+
+
+# Membuat tabel dengan caption dan styling yang rapi
+kable_output <- Data_Akumulasi %>%
+  kbl(caption = "Tabel 3. Akumulasi Data Ekspor Industri Manufaktur dengan Kurs Rupiah") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  scroll_box(width = "100%", height = "600px")
+
+
+# Menampilkan tabel
+kable_output
+
+
+```
+
+
+### Analisis masalah
+
+Hasil regresinya adalah
+
+```{r echo= FALSE}
+
+# Membaca data dari sheet "Data Akumulasi"
+file_path <- "Data Volume Ekspor Industri Manufaktur.xlsx"
+Data_Akumulasi <- read_excel(file_path, sheet = "Data Akumulasi", col_names = TRUE)
+
+# Pastikan nama kolom tidak memiliki spasi, gunakan make.names
+colnames(Data_Akumulasi) <- make.names(colnames(Data_Akumulasi))
+
+# Plot X (Kurs Rupiah) dan Y (Volume Ekspor)
+plot(
+  Data_Akumulasi$Kurs.Rupiah,     # Nama kolom yang sudah diperbaiki oleh make.names
+  Data_Akumulasi$volume.ekspor,  # Nama kolom yang sudah diperbaiki oleh make.names
+  xlab = "Kurs Rupiah",
+  ylab = "Volume Ekspor",
+  main = "Hubungan Kurs Rupiah terhadap Volume Ekspor",
+  col = "blue",
+  pch = 16
+)
+
+# Model regresi linier
+reg1 <- lm(volume.ekspor ~ Kurs.Rupiah, data = Data_Akumulasi)
+
+# Menampilkan ringkasan hasil regresi
+summary(reg1)
+
+# Menambahkan kolom residual (error) ke data
+Data_Akumulasi$u <- resid(reg1)
+
+# Menampilkan data dengan kolom residual
+head(Data_Akumulasi)
+
+bptest(reg1)
+
+
+```
+
+
+## Kesimpulan
+
+
+Hasil analisis menunjukkan bahwa fluktuasi nilai tukar rupiah terhadap USD memiliki hubungan dengan kinerja ekspor sektor manufaktur di Indonesia selama periode 2019-2023. Secara khusus, depresiasi nilai tukar rupiah cenderung meningkatkan daya saing harga produk manufaktur di pasar global, yang berpotensi meningkatkan volume ekspor. Model regresi univariat atau regresi linier sederhana menunjukkan adanya hubungan antara nilai tukar rupiah (sebagai variabel independen) dan volume ekspor manufaktur (sebagai variabel dependen). Koefisien regresi yang dihasilkan menggambarkan seberapa besar perubahan nilai tukar memengaruhi volume ekspor. Selain itu, uji statistik seperti uji asumsi regresi dan nilai residual telah dilakukan untuk memastikan validitas model. 
+
+Analisis data time series mengidentifikasi tren nilai tukar yang berfluktuasi selama periode 2019-2023, dengan depresiasi signifikan selama periode pandemi. Faktor-faktor seperti ketergantungan sektor manufaktur pada bahan baku impor, tingkat efisiensi teknis, dan investasi asing langsung (FDI) turut memengaruhi hubungan antara nilai tukar dan volume ekspor. Meskipun depresiasi nilai tukar dapat meningkatkan daya saing harga ekspor, kenaikan biaya produksi akibat ketergantungan pada bahan baku impor menjadi kendala yang harus diperhatikan. Hal ini dapat mengurangi keuntungan bagi sektor manufaktur dan memengaruhi keberlanjutan ekspor jangka panjang.
+
+
+
+## Referensi
+
+Azizah, W. (2021). COVID-19 In Indonesia: Analysis of Differences Earnings Management in the Fisrt Quarter. Jurnal Akuntansi, 11(1), 23–32. https://doi.org/10.33369/j.akuntansi.11.1.23-32
+
+Handoyo, R. D., Ibrahim, K. H., Wahyuni, T., Muhammad, F. R., & Baraya, A.-A. S. (2023). Trade margins of rubber exporters: The case of Indonesia. PLOS ONE, 18(11), e0292160. https://doi.org/10.1371/journal.pone.0292160
+
+Matondang, K. A., Azzahrah, N., & Ramli, R. (n.d.). Analisis Pengaruh Nilai Tukar Terhadap Ekspor Indonesia.
+
+Bank Indonesia, 2023
+
+Mustika, C., & Achmad, E. (2021). Analisis pengaruh nilai tukar, pertumbuhan ekonomi dan tenaga kerja terhadap ekspor Indonesia dan Malaysia ke China. Jurnal Paradigma Ekonomika, 16(2), 379–390. https://doi.org/10.22437/jpe.v16i2.12660
+
+Satu Data Perdagangan, Kementerian Perdagangan, 2023
+
+Pati, U. K. (2020). Indonesian Government Policy in Mitigating Economic Risks due to the Impact of the Covid-19 Outbreak. Journal of Law and Legal Reform, 1(4), 577–590. https://doi.org/10.15294/jllr.v1i4.39539
+
+Sulfiana, D., & Sentosa, S. U. (2021). Pengaruh Foreign Direct Investment, Inflasi dan Nilai Tukar Terhadap Kinerja Ekspor Manufaktur di Indonesia. Ecosains: Jurnal Ilmiah Ekonomi dan Pembangunan, 10(2), 98. https://doi.org/10.24036/ecosains.11563957.00
